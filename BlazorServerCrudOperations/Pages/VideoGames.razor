@@ -1,0 +1,50 @@
+﻿@page "/videogames"
+@inject IGameServices services
+@inject NavigationManager navman
+
+<h3>VideoGames</h3>
+
+<table>
+    <thead>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Developer</th>
+        <th>Release</th>
+        <th> </th>
+
+    </thead>
+    <tbody>
+        @foreach (Game item in services.games)
+        {
+            <tr>
+                <td width="20%">@item.Id</td>
+                <td width="20%">@item.Name</td>
+                <td width="20%">@item.Developer</td>
+                <td width="20%">@item.Release</td>
+                <td width="20%">
+                    <button class="btn btn-primary" @onclick="(()=>ShowGame(item.Id))">
+                        <i class="oi oi-pencil" />
+                    </button>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+<button class="btn btn-primary" @onclick="(()=>CreateGame())">
+    <i class="oi oi-plus" />
+</button>
+@code {
+    protected override async void OnInitialized()
+    {
+        await services.GetGamesAsync();
+    }
+    void ShowGame(int id)
+    {
+        navman.NavigateTo($"videogame/{id}");
+    }
+    void CreateGame()
+    {
+        navman.NavigateTo("videogame");
+    }
+}
